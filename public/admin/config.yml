@@ -1,0 +1,21 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "cricket_news"
+    label: "Cricket News"
+    folder: "src/content/cricket"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Category", name: "category", widget: "select", options: ["IPL","T20","ODI","Test"] }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
+      - { label: "Khelraja Banner Image", name: "banner_image", widget: "image", required: false }
+      - { label: "Banner Link", name: "banner_link", widget: "string", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
