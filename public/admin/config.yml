@@ -2,7 +2,8 @@ backend:
   name: github
   repo: ITngTKSI/seo-site-cms
   branch: staging
-  auth_endpoint: https://decap-auth.tkservicesco.workers.dev
+  base_url: https://decap-auth.tkservicesco.workers.dev
+  auth_endpoint: /?provider=github
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
