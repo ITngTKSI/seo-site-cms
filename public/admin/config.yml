@@ -1,10 +1,11 @@
 site_url: https://seo-site-cms.pages.dev
+
 backend:
   name: github
   repo: ITngTKSI/seo-site-cms
   branch: staging
   base_url: https://decap-auth.tkservicesco.workers.dev
-  site_domain: seo-site-cms.pages.dev
+  auth_endpoint: /
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
