@@ -1,4 +1,4 @@
-site_url: https://seo-site-cms.pages.dev
+site_url: https://seo-site-cms.pages.dev/admin
 
 backend:
   name: github
