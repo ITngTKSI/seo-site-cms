@@ -1,3 +1,5 @@
+# force rebuild - remove netlify auth
+
 site_url: https://cms.11raja.com
 
 backend:
