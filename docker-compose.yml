@@ -1,10 +1,10 @@
-version: '3.8'
-
 services:
   strapi:
     container_name: cricket-news-strapi
-    image: strapi/strapi:latest
+    image: node:18-alpine
+    working_dir: /srv/app
     restart: unless-stopped
+    command: sh -c "if [ ! -f package.json ]; then npx create-strapi-app@latest . --quickstart --no-run --dbclient postgres --dbhost postgres --dbport 5432 --dbname strapi --dbusername strapi --dbpassword $${DATABASE_PASSWORD}; fi && npm install && npm run develop"
     environment:
       DATABASE_CLIENT: postgres
       DATABASE_HOST: postgres
@@ -18,13 +18,15 @@ services:
       APP_KEYS: ${APP_KEYS:-change-me-in-production}
       API_TOKEN_SALT: ${API_TOKEN_SALT:-change-me-in-production}
       TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT:-change-me-in-production}
+      NODE_ENV: development
     volumes:
       - ./strapi-app:/srv/app
       - ./strapi-uploads:/srv/app/public/uploads
     ports:
       - '1337:1337'
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - strapi-network
 
@@ -40,6 +42,11 @@ services:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U strapi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - strapi-network
 

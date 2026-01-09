@@ -1,0 +1,23 @@
+FROM node:18-alpine
+
+WORKDIR /srv/app
+
+# Install Strapi
+RUN npx create-strapi-app@latest . --quickstart --no-run
+
+# Copy package files if they exist
+COPY strapi-package.json package.json 2>/dev/null || true
+
+# Install dependencies
+RUN npm install
+
+# Copy app files
+COPY strapi-app/ ./src/
+COPY strapi-config/ ./config/ 2>/dev/null || true
+
+# Expose port
+EXPOSE 1337
+
+# Start Strapi
+CMD ["npm", "run", "develop"]
+
