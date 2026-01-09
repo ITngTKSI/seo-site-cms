@@ -17,6 +17,10 @@ pnpm-debug.log*
 .env
 .env.production
 
+# Strapi
+strapi-app/
+strapi-uploads/
+
 # macOS-specific files
 .DS_Store
 

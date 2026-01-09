@@ -1,0 +1,125 @@
+---
+import { getCricketNewsBySlug, getStrapiImageUrl, type CricketNews } from '../../../lib/strapi';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+export async function getStaticPaths() {
+  const { getCricketNews } = await import('../../../lib/strapi');
+  const posts = await getCricketNews();
+  
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CricketNews;
+}
+
+const { post } = Astro.props;
+const publishDate = new Date(post.publishDate);
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={post.title} description={post.title} />
+    <style>
+      main {
+        width: calc(100% - 2em);
+        max-width: 100%;
+        margin: 0;
+      }
+      .hero-image {
+        width: 100%;
+      }
+      .hero-image img {
+        display: block;
+        margin: 0 auto;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+      }
+      .prose {
+        width: 720px;
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 1em;
+        color: rgb(var(--gray-dark));
+      }
+      .title {
+        margin-bottom: 1em;
+        padding: 1em 0;
+        text-align: center;
+        line-height: 1;
+      }
+      .title h1 {
+        margin: 0 0 0.5em 0;
+      }
+      .date {
+        margin-bottom: 0.5em;
+        color: rgb(var(--gray));
+      }
+      .category {
+        display: inline-block;
+        padding: 0.25em 0.75em;
+        background: var(--accent);
+        color: white;
+        border-radius: 4px;
+        font-size: 0.875em;
+        margin-bottom: 1em;
+      }
+      .banner-section {
+        margin: 2em 0;
+        text-align: center;
+      }
+      .banner-section img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+    <main>
+      <article>
+        {post.featuredImage && (
+          <div class="hero-image">
+            <img
+              src={getStrapiImageUrl(post.featuredImage)}
+              alt={post.featuredImage.alternativeText || post.title}
+            />
+          </div>
+        )}
+        <div class="prose">
+          <div class="title">
+            <div class="date">
+              <FormattedDate date={publishDate} />
+            </div>
+            <span class="category">{post.category}</span>
+            <h1>{post.title}</h1>
+            <hr />
+          </div>
+          
+          {post.bannerImage && post.bannerLink && (
+            <div class="banner-section">
+              <a href={post.bannerLink} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={getStrapiImageUrl(post.bannerImage)}
+                  alt={post.bannerImage.alternativeText || "Khelraja Banner"}
+                />
+              </a>
+            </div>
+          )}
+          
+          <div class="content" set:html={post.body} />
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>
+

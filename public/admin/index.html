@@ -2,11 +2,49 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Content Manager</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Content Manager - Sanity Studio</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        background: #f5f5f5;
+      }
+      .container {
+        text-align: center;
+        padding: 2em;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      a {
+        display: inline-block;
+        margin-top: 1em;
+        padding: 0.75em 1.5em;
+        background: #f03e2f;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+      }
+      a:hover {
+        background: #d32e1f;
+      }
+    </style>
   </head>
   <body>
-    <div id="nc-root"></div>
-    <script src="https://unpkg.com/decap-cms@latest/dist/decap-cms.js"></script>
+    <div class="container">
+      <h1>Content Manager</h1>
+      <p>This project uses Strapi CMS (self-hosted, free).</p>
+      <p>Access your Strapi admin panel:</p>
+      <a href="/admin" target="_blank">Open Strapi Admin</a>
+      <p style="font-size: 0.875em; color: #666; margin-top: 1em;">
+        Default URL: <code>http://localhost:1337/admin</code> (local)<br />
+        Or your production Strapi URL after deployment.
+      </p>
+    </div>
   </body>
 </html>

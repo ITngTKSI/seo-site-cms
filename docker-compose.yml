@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  strapi:
+    container_name: cricket-news-strapi
+    image: strapi/strapi:latest
+    restart: unless-stopped
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-change-me-in-production}
+      DATABASE_SSL: 'false'
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET:-change-me-in-production}
+      APP_KEYS: ${APP_KEYS:-change-me-in-production}
+      API_TOKEN_SALT: ${API_TOKEN_SALT:-change-me-in-production}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT:-change-me-in-production}
+    volumes:
+      - ./strapi-app:/srv/app
+      - ./strapi-uploads:/srv/app/public/uploads
+    ports:
+      - '1337:1337'
+    depends_on:
+      - postgres
+    networks:
+      - strapi-network
+
+  postgres:
+    container_name: cricket-news-postgres
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-change-me-in-production}
+      POSTGRES_DB: strapi
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - strapi-network
+
+volumes:
+  postgres-data:
+    name: cricket-news-postgres-data
+
+networks:
+  strapi-network:
+    name: cricket-news-network
+

@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "strapi:up": "docker compose up -d",
+    "strapi:down": "docker compose down",
+    "strapi:logs": "docker compose logs -f strapi"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
