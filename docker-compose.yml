@@ -4,7 +4,7 @@ services:
     image: node:20-alpine
     working_dir: /srv/app
     restart: unless-stopped
-    command: sh -c "if [ ! -f /srv/app/package.json ]; then rm -rf /srv/app/* /srv/app/.*[!.]* 2>/dev/null || true; printf 'n\n' | npx -y create-strapi-app@latest /srv/app --quickstart --no-run --dbclient postgres --dbhost postgres --dbport 5432 --dbname strapi --dbusername strapi --dbpassword $${DATABASE_PASSWORD}; fi && cd /srv/app && npm install && npm run build && npm run start"
+    command: sh -c "if [ ! -f /srv/app/package.json ]; then rm -rf /srv/app/* /srv/app/.*[!.]* 2>/dev/null || true; printf 'n\n' | npx -y create-strapi-app@latest /srv/app --quickstart --no-run --dbclient postgres --dbhost postgres --dbport 5432 --dbname strapi --dbusername strapi --dbpassword $${DATABASE_PASSWORD}; fi && cd /srv/app && npm install && NODE_OPTIONS='--max-old-space-size=2048' npm run build && NODE_OPTIONS='--max-old-space-size=1024' npm run start"
     environment:
       DATABASE_CLIENT: postgres
       DATABASE_HOST: postgres
