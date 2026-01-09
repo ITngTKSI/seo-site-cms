@@ -95,13 +95,19 @@ export async function getCricketNews(): Promise<CricketNews[]> {
     );
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.statusText}`);
+      console.warn(`Strapi API returned ${response.status}: ${response.statusText}`);
+      return [];
     }
 
     const data: StrapiResponse<CricketNewsAttributes> = await response.json();
     return data.data.map(transformStrapiData);
   } catch (error) {
-    console.error('Error fetching cricket news:', error);
+    // Silently fail during build - content will be empty but site will build
+    if (import.meta.env.MODE === 'production' || import.meta.env.ASTRO_BUILD) {
+      console.warn('Strapi unavailable during build, continuing with empty content');
+    } else {
+      console.error('Error fetching cricket news:', error);
+    }
     return [];
   }
 }
@@ -118,14 +124,20 @@ export async function getCricketNewsBySlug(slug: string): Promise<CricketNews | 
     );
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.statusText}`);
+      console.warn(`Strapi API returned ${response.status}: ${response.statusText}`);
+      return null;
     }
 
     const data: StrapiSingleResponse<CricketNewsAttributes> = await response.json();
     if (!data.data) return null;
     return transformStrapiData(data.data);
   } catch (error) {
-    console.error('Error fetching cricket news by slug:', error);
+    // Silently fail during build
+    if (import.meta.env.MODE === 'production' || import.meta.env.ASTRO_BUILD) {
+      console.warn('Strapi unavailable during build');
+    } else {
+      console.error('Error fetching cricket news by slug:', error);
+    }
     return null;
   }
 }
